@@ -1,0 +1,16 @@
+{
+    "name": "SaveMEmory",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6fad7e4409517cd47880509721348149"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
