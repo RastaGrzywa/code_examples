@@ -3,7 +3,7 @@
 Welcome to the "Code Examples" repository! This repository serves as a collection of well-architected Unity projects showcasing various design patterns and systems implemented in C#.
 ## Purpose
 
-The primary goal of this repository is to demonstrate my coding skills and provide clear examples of how different software engineering concepts can be implemented in Unity using C#. Each example is designed to be modular, easy to understand, and ready for expansion.
+The primary goal of this repository is to learn and improve my coding skills and provide clear examples of how different software engineering concepts can be implemented in Unity using C#. Each example is designed to be modular, easy to understand, and ready for expansion.
 
 ## Current Examples
 ### 1. Command Pattern - _0_Navigation
