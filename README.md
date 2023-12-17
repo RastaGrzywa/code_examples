@@ -118,6 +118,98 @@ public abstract class EventListener<T> : MonoBehaviour
 }
 ```
 
+
+
+### 3. Object pooling - _2_PullMyObjects
+
+The Object Pooling example illustrates the efficient management of game objects by reusing instances rather than instantiating and destroying them. This approach is crucial for optimizing performance in scenarios where frequent instantiation and destruction are involved.
+You can check both standard and object pooling approach.
+
+Usage
+
+```csharp
+public class ObjectPool : MonoBehaviour
+{
+    public static ObjectPool Instance;
+
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private int poolSize = 10;
+
+    private readonly Queue<GameObject> _bulletPool = new Queue<GameObject>();
+
+    private void Awake()
+    {
+        Instance = this;
+        InitializePool();
+    }
+
+    private void InitializePool()
+    {
+        for (var i = 0; i < poolSize; i++)
+        {
+            var bullet = Instantiate(bulletPrefab);
+            bullet.SetActive(false);
+            _bulletPool.Enqueue(bullet);
+        }
+    }
+
+    public GameObject GetBullet(Vector3 position, Quaternion rotation)
+    {
+        if (_bulletPool.Count == 0)
+        {
+            ExpandPool();
+        }
+
+        var bullet = _bulletPool.Dequeue();
+        bullet.transform.position = position;
+        bullet.transform.rotation = rotation;
+        bullet.SetActive(true);
+
+        return bullet;
+    }
+
+    public void ReturnBullet(GameObject bullet)
+    {
+        bullet.SetActive(false);
+        _bulletPool.Enqueue(bullet);
+    }
+
+    private void ExpandPool()
+    {
+        var bullet = Instantiate(bulletPrefab);
+        bullet.SetActive(false);
+        _bulletPool.Enqueue(bullet);
+    }
+}
+
+public class OPBulletSpawner : MonoBehaviour
+{
+    ...
+
+    private void SpawnBullet()
+    {
+        GameObject bullet = Scripts.ObjectPool.ObjectPool.Instance.GetBullet(spawnTransform.position, Quaternion.identity);
+        bullet.transform.up = spawnTransform.forward;
+        bullet.GetComponent<Rigidbody>().AddForce(spawnTransform.forward * 50, ForceMode.Impulse);
+    }
+}
+
+public class OPBullet : MonoBehaviour
+{
+    private void OnEnable()
+    {
+        Invoke(nameof(DisableBullet), 10f);
+        
+    }
+    
+    private void DisableBullet()
+    {
+        Scripts.ObjectPool.ObjectPool.Instance.ReturnBullet(gameObject);
+    }
+}
+```
+
+
 ## How to Use
 
 Each example is contained within its own directory. To integrate an example into your Unity project, follow these steps:
